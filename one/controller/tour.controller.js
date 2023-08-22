@@ -72,4 +72,25 @@ const updateTour = async(req,res)=>{
     }
 }
 
-module.exports = { getAllTour, addTour,getTour,updateTour };
+const deleteTour = async (req,res)=>{
+
+    try {
+        
+        const tour = await Tour.findByIdAndDelete(req.params.id)
+        // if set status to 204 no response visible res visible after delete
+        res.status(200).json({
+            status:"Deleted",
+            tour:{
+                msg:`${tour} is deleted`
+            }
+        })
+    } catch (error) {
+        console.log("error from deleeTour",error)
+        res.status(400).json({
+            msg:`Error form deleted Tour ${error}`
+        })
+        
+    }
+}
+
+module.exports = { getAllTour, addTour,getTour,updateTour ,deleteTour};
