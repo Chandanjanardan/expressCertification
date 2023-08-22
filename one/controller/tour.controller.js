@@ -47,6 +47,29 @@ const addTour = async (req, res) => {
       error: "Error adding tour",
     });
   }
+  
 };
 
-module.exports = { getAllTour, addTour,getTour };
+
+const updateTour = async(req,res)=>{
+    try {
+        const tour= await Tour.findByIdAndUpdate(req.params.id,req.body,{
+            new:true,
+            runvalidator:true
+        })
+        res.status(200).json({
+            status:"success",
+            data:{
+                tour
+            }
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({
+            msg:"error from update by id"
+        })
+        
+    }
+}
+
+module.exports = { getAllTour, addTour,getTour,updateTour };
