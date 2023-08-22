@@ -41,6 +41,25 @@ res.status(201).json({
     })
     
 })
+
+// making modal
+const tourSchema = new mongoose.Schema(
+    {
+    name:{
+        type:String,
+        require:[true,"A tour must have a name"],
+        unique:true
+    },
+    rating:{
+        type:String,
+        require:true
+    },
+    price:{
+        type:String,
+        require:[true, "A tour must have price"]
+    }
+});
+const Tour = new mongoose.model("tour",tourSchema)
 try {
    mongoose.connect("mongodb://127.0.0.1:27017/one")
    .then(()=>console.log("DB Connected successfully"))
