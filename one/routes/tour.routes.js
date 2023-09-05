@@ -7,6 +7,7 @@ const {getAllTour,addTour,getTour,updateTour,deleteTour} = require ("../controll
 userRouter.get("/",getAllTour)
 userRouter.post("/",addTour)
 userRouter.get("/:id",getTour)
+userRouter.get("/byname",tourByName)
 userRouter.patch("/:id",updateTour)
 userRouter.delete("/:id",deleteTour)
 

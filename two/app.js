@@ -1,19 +1,17 @@
 // const fs = require("fs");
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
-const userRouter= require("./routes/tour.routes")
-
-// Used for parsing JSON requests
+const app = express();
+const tourRouter=require ("./routes/tour.route")
 app.use(express.json());
 
-// Read tours data from JSON file (ensure the path is correct)
-// const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
-app.use("/api/v1",userRouter)
 
-// Connect to MongoDB
+
+app.use("/api/v1",tourRouter)
+
+
 mongoose
-  .connect("mongodb://127.0.0.1:27017/one", {
+  .connect("mongodb://127.0.0.1:27017/two", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

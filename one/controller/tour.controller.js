@@ -28,6 +28,9 @@ const getTour= async(req,res)=>{
     }
 }
 
+// get tour by name
+ 
+
 const addTour = async (req, res) => {
   try {
     const { name, rating, price } = req.body;
