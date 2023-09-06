@@ -2,6 +2,7 @@ const Tour =require("../models/tour.models")
 
 // getallTour
 const getAllTour = async (req, res) => {
+    console.log(req.query)
     const allTour= await Tour.find({})
   res.status(200).json({
     status:"success",
@@ -14,14 +15,39 @@ const getAllTour = async (req, res) => {
 // add tour
 const addTour = async (req, res) => {
     try {
-      const {name, rating, price } = req.body; // Destructure the properties
+      const { name,
+        duration,
+        maxGroupSize,
+        difficulty,
+        ratingAverage,
+        ratingQuantity,
+        priceDiscount,
+        rating,
+        price,
+        summary,
+        description,
+        images,
+        createdAt,
+        startDates, } = req.body; // Destructure the properties
       console.log(name);
 
       // Create a new Tour object
       const tourObj = new Tour({
-        name,
-        rating,
+        // this is both the ways
+        name:name,
+        duration,
+        maxGroupSize,
+        difficulty,
+        ratingAverage,
+        ratingQuantity,
+        priceDiscount,
+        rating:rating,
         price,
+        summary,
+        description,
+        images,
+        createdAt,
+        startDates,
       });
 
       const addedTour = await tourObj.save();
