@@ -17,6 +17,11 @@ email:{
     
 },
 photo:String,
+role:{
+    type:String,
+    enum:["user","guide","lead-guide","admin"],
+    default:"user"
+},
 password:{
     type:String,
     required:true,

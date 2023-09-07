@@ -7,18 +7,18 @@ console.log("this is secret",secretkey)
 
 const signup= async(req,res,next)=>{
     try {
-        const {name,email,photo,password,paswordConfirm,_id}=req.body
+        const {name,email,photo,role,password,paswordConfirm,_id,}=req.body
         console.log(name,email,paswordConfirm)
 
         
         
-        const token =jwt.sign({name,email,password,_id},secretkey,{
-          expiresIn:"10d"
+        const token =jwt.sign({name,email,password,role},secretkey,{
+          expiresIn:"90d"
         })
         // console.log(token)
       const userObj= new User({
       
-          name,email,photo,password,paswordConfirm
+          name,email,photo,role,password,paswordConfirm
       })
       
           const data = await userObj.save()
@@ -41,7 +41,7 @@ const signup= async(req,res,next)=>{
 const login= async(req,res,next)=>{
     try {
         
-        const {email,password} = req.body
+        const {email,password,token} = req.body
         // if email and password is exist
         if(!email || !password){
           return  res.status(404).json({
@@ -81,14 +81,18 @@ const protect =async (req,res,next)=>{
             return next(("please verify yourself"))
         }
         // validate token
-        const decode = jwt.verify(token,secretkey)
+        const decode = await jwt.verify(token,secretkey)
         console.log(decode, "this is jwt decode")
-         return next()
-
+        
         // check is user still exists
+        // const freshUser = await User.find(decode.email)
+        // if(!freshUser){
+        //     return next(("User no longer exist"))
+        // }
+        next()
         // chek if uer changed password token
         
-        next()
+        
     } catch (error) {
         console.error(error)
         res.status(500).json({
@@ -96,5 +100,26 @@ const protect =async (req,res,next)=>{
         
     })
 }}
+const restrictTo =(...roles)=>{
+    return async (req,res,next)=>{
+        let token ;
+        // getting token and check its exist
+        if(req.headers.authorization && req.headers.authorization.startsWith("Bearer"))
+        {
+            token=req.headers.authorization.split(" ")[1]
+        }
+        
+        if(!token){
+            return next(("please verify yourself"))
+        }
+        // validate token
+        const decode = await jwt.verify(token,secretkey)
+        console.log(decode, "this is jwt decode")
+        if(!decode.role==="amdin"){
+        return next("forbidden")}
+    }
+    next()
+}
+  
 
-module.exports={protect,login,signup}
+module.exports={protect,login,signup,restrictTo}
